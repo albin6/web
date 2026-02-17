@@ -1,0 +1,59 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider } from '@/components/theme-provider';
+import AuthLayout from '@/layouts/AuthLayout';
+import LoginPage from '@/features/auth/pages/LoginPage';
+import SignupPage from '@/features/auth/pages/SignupPage';
+import DashboardLayout from '@/layouts/DashboardLayout';
+import DashboardPage from '@/features/dashboard/pages/DashboardPage';
+import StudentsPage from '@/features/students/pages/StudentsPage';
+import FollowUpListPage from '@/features/followup/pages/FollowUpListPage';
+import FollowUpDetailPage from '@/features/followup/pages/FollowUpDetailPage';
+import ProtectedRoute from '@/layouts/ProtectedRoute';
+import { Toaster } from 'sonner';
+import { queryClient } from '@/lib/queryClient';
+import { NotificationProvider } from '@/contexts/NotificationContext';
+import { WebSocketManager } from '@/components/WebSocketManager';
+
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <NotificationProvider>
+        <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+              {/* Auth Routes */}
+              <Route element={<AuthLayout />}>
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+              </Route>
+
+              {/* Protected Dashboard Routes */}
+              <Route element={<ProtectedRoute />}>
+                <Route element={<DashboardLayout />}>
+                  <Route path="/dashboard" element={<DashboardPage />} />
+                  <Route path="/students" element={<StudentsPage />} />
+                  <Route path="/followups" element={<FollowUpListPage />} />
+                  <Route path="/followups/:id" element={<FollowUpDetailPage />} />
+                </Route>
+              </Route>
+
+              {/* Fallback */}
+              <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            </Routes>
+
+            {/* WebSocket Manager - only connects when authenticated */}
+            <WebSocketManager />
+
+            {/* Toast notifications */}
+            <Toaster />
+          </BrowserRouter>
+        </ThemeProvider>
+      </NotificationProvider>
+    </QueryClientProvider>
+  );
+}
+
+export default App;
