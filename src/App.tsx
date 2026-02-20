@@ -9,49 +9,54 @@ import DashboardPage from '@/features/dashboard/pages/DashboardPage';
 import StudentsPage from '@/features/students/pages/StudentsPage';
 import FollowUpListPage from '@/features/followup/pages/FollowUpListPage';
 import FollowUpDetailPage from '@/features/followup/pages/FollowUpDetailPage';
+import TasksPage from '@/features/tasks/pages/TasksPage';
 import ProtectedRoute from '@/layouts/ProtectedRoute';
 import { Toaster } from 'sonner';
 import { queryClient } from '@/lib/queryClient';
 import { NotificationProvider } from '@/contexts/NotificationContext';
+import { AuthProvider } from '@/contexts/AuthContext';
 import { WebSocketManager } from '@/components/WebSocketManager';
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <NotificationProvider>
-        <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <AuthProvider>
+        <NotificationProvider>
+          <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
-              {/* Auth Routes */}
-              <Route element={<AuthLayout />}>
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignupPage />} />
-              </Route>
-
-              {/* Protected Dashboard Routes */}
-              <Route element={<ProtectedRoute />}>
-                <Route element={<DashboardLayout />}>
-                  <Route path="/dashboard" element={<DashboardPage />} />
-                  <Route path="/students" element={<StudentsPage />} />
-                  <Route path="/followups" element={<FollowUpListPage />} />
-                  <Route path="/followups/:id" element={<FollowUpDetailPage />} />
+                {/* Auth Routes */}
+                <Route element={<AuthLayout />}>
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/signup" element={<SignupPage />} />
                 </Route>
-              </Route>
 
-              {/* Fallback */}
-              <Route path="*" element={<Navigate to="/dashboard" replace />} />
-            </Routes>
+                {/* Protected Dashboard Routes */}
+                <Route element={<ProtectedRoute />}>
+                  <Route element={<DashboardLayout />}>
+                    <Route path="/dashboard" element={<DashboardPage />} />
+                    <Route path="/students" element={<StudentsPage />} />
+                    <Route path="/tasks" element={<TasksPage />} />
+                    <Route path="/followups" element={<FollowUpListPage />} />
+                    <Route path="/followups/:id" element={<FollowUpDetailPage />} />
+                  </Route>
+                </Route>
 
-            {/* WebSocket Manager - only connects when authenticated */}
-            <WebSocketManager />
+                {/* Fallback */}
+                <Route path="*" element={<Navigate to="/dashboard" replace />} />
+              </Routes>
 
-            {/* Toast notifications */}
-            <Toaster />
-          </BrowserRouter>
-        </ThemeProvider>
-      </NotificationProvider>
+              {/* WebSocket Manager - only connects when authenticated */}
+              <WebSocketManager />
+
+              {/* Toast notifications */}
+              <Toaster />
+            </BrowserRouter>
+          </ThemeProvider>
+        </NotificationProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

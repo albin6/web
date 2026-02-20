@@ -23,33 +23,38 @@ interface StudentFiltersProps {
 export function StudentFilters({ filters, onFilterChange }: StudentFiltersProps) {
     const { data: batches } = useQuery({
         queryKey: ['tool-batches'],
-        queryFn: studentToolService.getBatches
+        queryFn: studentToolService.getBatches,
+        staleTime: 1000 * 60 * 30,
     });
 
     const { data: courses } = useQuery({
         queryKey: ['tool-courses'],
-        queryFn: studentToolService.getCourses
+        queryFn: studentToolService.getCourses,
+        staleTime: 1000 * 60 * 30,
     });
 
     const { data: domains } = useQuery({
         queryKey: ['tool-domains'],
-        queryFn: studentToolService.getDomains
+        queryFn: studentToolService.getDomains,
+        staleTime: 1000 * 60 * 30,
     });
 
     const { data: statusOptions } = useQuery({
         queryKey: ['tool-status-options'],
-        queryFn: () => studentToolService.getStatusOptions('student_status')
+        queryFn: () => studentToolService.getStatusOptions('student_status'),
+        staleTime: 1000 * 60 * 30,
     });
 
+    const activeFilterCount = [filters.batchId, filters.courseId, filters.domainId, filters.statusCodes].filter(Boolean).length;
+
     return (
-        <div className="flex flex-wrap gap-4 items-center">
-            {/* Batch Filter */}
+        <div className="flex flex-wrap gap-2 items-center">
             <Select
                 value={filters.batchId || "all"}
                 onValueChange={(val) => onFilterChange('batchId', val === "all" ? undefined : val)}
             >
-                <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Filter by Batch" />
+                <SelectTrigger className="w-[160px]">
+                    <SelectValue placeholder="Batch" />
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem value="all">All Batches</SelectItem>
@@ -59,13 +64,12 @@ export function StudentFilters({ filters, onFilterChange }: StudentFiltersProps)
                 </SelectContent>
             </Select>
 
-            {/* Course Filter */}
             <Select
                 value={filters.courseId || "all"}
                 onValueChange={(val) => onFilterChange('courseId', val === "all" ? undefined : val)}
             >
-                <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Filter by Course" />
+                <SelectTrigger className="w-[160px]">
+                    <SelectValue placeholder="Course" />
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem value="all">All Courses</SelectItem>
@@ -75,13 +79,12 @@ export function StudentFilters({ filters, onFilterChange }: StudentFiltersProps)
                 </SelectContent>
             </Select>
 
-            {/* Domain Filter */}
             <Select
                 value={filters.domainId || "all"}
                 onValueChange={(val) => onFilterChange('domainId', val === "all" ? undefined : val)}
             >
-                <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Filter by Domain" />
+                <SelectTrigger className="w-[160px]">
+                    <SelectValue placeholder="Domain" />
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem value="all">All Domains</SelectItem>
@@ -91,13 +94,12 @@ export function StudentFilters({ filters, onFilterChange }: StudentFiltersProps)
                 </SelectContent>
             </Select>
 
-            {/* Status Filter */}
             <Select
                 value={filters.statusCodes || "all"}
                 onValueChange={(val) => onFilterChange('statusCodes', val === "all" ? undefined : val)}
             >
-                <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Filter by Status" />
+                <SelectTrigger className="w-[160px]">
+                    <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem value="all">All Status</SelectItem>
@@ -107,7 +109,7 @@ export function StudentFilters({ filters, onFilterChange }: StudentFiltersProps)
                 </SelectContent>
             </Select>
 
-            {(filters.batchId || filters.courseId || filters.domainId || filters.statusCodes) && (
+            {activeFilterCount > 0 && (
                 <Button
                     variant="ghost"
                     size="sm"
@@ -117,10 +119,15 @@ export function StudentFilters({ filters, onFilterChange }: StudentFiltersProps)
                         onFilterChange('domainId', undefined);
                         onFilterChange('statusCodes', undefined);
                     }}
-                    className="h-8 lg:px-3"
+                    className="h-9 gap-1.5 text-muted-foreground hover:text-foreground"
                 >
                     Reset
-                    <X className="ml-2 h-4 w-4" />
+                    <X className="h-3.5 w-3.5" />
+                    {activeFilterCount > 1 && (
+                        <span className="ml-0.5 rounded-full bg-muted px-1.5 py-0.5 text-xs font-medium">
+                            {activeFilterCount}
+                        </span>
+                    )}
                 </Button>
             )}
         </div>

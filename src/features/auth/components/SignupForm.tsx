@@ -15,7 +15,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { authService } from '@/features/auth/services/authService';
+import { useAuth } from '@/contexts/AuthContext';
 
 const formSchema = z.object({
     name: z.string().min(2, {
@@ -38,6 +38,7 @@ const formSchema = z.object({
 
 export function SignupForm() {
     const navigate = useNavigate();
+    const { signUpWithEmail } = useAuth();
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
@@ -56,17 +57,11 @@ export function SignupForm() {
         setLoading(true);
         setError(null);
         try {
-            await authService.signup({
-                name: values.name,
-                email: values.email,
-                phone: values.phone,
-                password: values.password,
-            });
-            // Redirect to login after successful signup
+            await signUpWithEmail(values.email, values.password, values.name, 'user');
             navigate('/login');
         } catch (err: any) {
             console.error(err);
-            setError(err.response?.data?.error || "Signup failed. Please try again.");
+            setError(err.message || "Signup failed. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -158,10 +153,10 @@ export function SignupForm() {
                 </Form>
             </CardContent>
             <CardFooter className="justify-center">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-muted-foreground">
                     Already have an account?{' '}
-                    <Link to="/login" className="text-blue-600 hover:underline">
-                        Login
+                    <Link to="/login" className="text-primary hover:underline font-medium">
+                        Sign in
                     </Link>
                 </p>
             </CardFooter>

@@ -3,20 +3,16 @@ import type { ToolStudentListResponse, ToolStudentParams, Batch, Course, Domain,
 
 export const studentToolService = {
     getStudents: async (params: ToolStudentParams): Promise<ToolStudentListResponse> => {
-        console.log("DEBUG: Calling studentToolService.getStudents with params:", params);
         const queryParams = new URLSearchParams();
         if (params.page) queryParams.append('offset', ((params.page - 1) * (params.pageSize || 10)).toString());
         if (params.pageSize) queryParams.append('pageSize', params.pageSize.toString());
         if (params.searchKey) queryParams.append('searchKey', params.searchKey);
 
-        // Add other filters
         if (params.batchId) queryParams.append('batchIds', params.batchId);
         if (params.courseId) queryParams.append('courseIds', params.courseId);
         if (params.domainId) queryParams.append('domainIds', params.domainId);
         if (params.statusCodes) queryParams.append('statusCodes', params.statusCodes);
-        // ... map other params
 
-        // api.get uses the configured baseURL (http://localhost:8080)
         const response = await api.get(`/api/tool/students?${queryParams.toString()}`);
         return response.data;
     },

@@ -16,7 +16,6 @@ import type {
 } from '@/types/followup';
 
 export const followupService = {
-    // Follow-up CRUD
     getFollowUps: async (params: GetFollowUpsParams): Promise<PaginatedResponse<FollowUp>> => {
         const response = await api.get(ENDPOINTS.FOLLOWUPS.LIST, { params });
         return response.data;
@@ -37,7 +36,6 @@ export const followupService = {
         return response.data;
     },
 
-    // Contact Logs
     getContactLogs: async (followUpId: number): Promise<ApiResponse<ContactLog[]>> => {
         const response = await api.get(ENDPOINTS.FOLLOWUPS.CONTACTS.LIST(followUpId));
         return response.data;
@@ -51,7 +49,6 @@ export const followupService = {
         return response.data;
     },
 
-    // Meetings
     getMeetings: async (followUpId: number): Promise<ApiResponse<Meeting[]>> => {
         const response = await api.get(ENDPOINTS.FOLLOWUPS.MEETINGS.LIST(followUpId));
         return response.data;
@@ -78,7 +75,6 @@ export const followupService = {
         return response.data;
     },
 
-    // Reminders
     getUpcomingReminders: async (): Promise<ApiResponse<Reminder[]>> => {
         const response = await api.get(ENDPOINTS.REMINDERS.UPCOMING);
         return response.data;

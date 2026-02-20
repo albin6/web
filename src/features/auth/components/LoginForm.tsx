@@ -14,8 +14,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { authService } from '@/features/auth/services/authService';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useAuth } from '@/contexts/AuthContext';
 
 const formSchema = z.object({
     email: z.string().email({
@@ -28,6 +28,7 @@ const formSchema = z.object({
 
 export function LoginForm() {
     const navigate = useNavigate();
+    const { signInWithEmail } = useAuth();
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
@@ -43,22 +44,20 @@ export function LoginForm() {
         setLoading(true);
         setError(null);
         try {
-            const response = await authService.login(values);
-            localStorage.setItem('access_token', response.access_token);
-            localStorage.setItem('refresh_token', response.refresh_token);
+            await signInWithEmail(values.email, values.password);
             navigate('/dashboard');
         } catch (err: any) {
             console.error(err);
-            setError(err.response?.data?.error || "Invalid credentials or server error");
+            setError(err.message || "Invalid credentials or server error");
         } finally {
             setLoading(false);
         }
     }
 
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Login</CardTitle>
+        <Card className="shadow-xl border-border/60">
+            <CardHeader className="pb-4">
+                <CardTitle className="text-2xl">Welcome back</CardTitle>
                 <CardDescription>Enter your credentials to access your account.</CardDescription>
             </CardHeader>
             <CardContent>
@@ -89,27 +88,27 @@ export function LoginForm() {
                                 <FormItem>
                                     <FormLabel>Password</FormLabel>
                                     <FormControl>
-                                        <Input type="password" placeholder="******" {...field} />
+                                        <Input type="password" placeholder="••••••••" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <div className="flex justify-end">
-                            <Link to="/forgot-password" className="text-sm text-blue-600 hover:underline">
+                            <Link to="/forgot-password" className="text-sm text-primary hover:underline">
                                 Forgot password?
                             </Link>
                         </div>
                         <Button type="submit" className="w-full" disabled={loading}>
-                            {loading ? "Logging in..." : "Login"}
+                            {loading ? "Signing in..." : "Sign In"}
                         </Button>
                     </form>
                 </Form>
             </CardContent>
             <CardFooter className="justify-center">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-muted-foreground">
                     Don't have an account?{' '}
-                    <Link to="/signup" className="text-blue-600 hover:underline">
+                    <Link to="/signup" className="text-primary hover:underline font-medium">
                         Sign up
                     </Link>
                 </p>
