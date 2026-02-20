@@ -5,9 +5,10 @@ import { ToolStudentsTable } from '../components/ToolStudentsTable';
 import { StudentFilters } from '../components/StudentFilters';
 import { Input } from '@/components/ui/input';
 import { useDebounce } from '@/lib/useDebounce';
+import { Badge } from '@/components/ui/badge';
+import { Search } from 'lucide-react';
 
 export default function StudentsPage() {
-    console.log("DEBUG: Rendering NEW StudentsPage with Tool API");
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState("");
     const [filters, setFilters] = useState<{
@@ -16,10 +17,10 @@ export default function StudentsPage() {
         domainId?: string;
         statusCodes?: string;
     }>({
-        statusCodes: "2" // Default to Student (Active)
+        statusCodes: "2"
     });
 
-    const debouncedSearch = useDebounce(search, 500);
+    const debouncedSearch = useDebounce(search, 600);
     const debouncedFilters = useDebounce(filters, 300);
     const pageSize = 10;
 
@@ -31,37 +32,48 @@ export default function StudentsPage() {
             searchKey: debouncedSearch,
             ...debouncedFilters
         }),
-        placeholderData: (previousData) => previousData, // Keep previous data while fetching new
+        placeholderData: (previousData) => previousData,
     });
+
+    const totalCount = parseInt(studentsData?.totalCount || "0");
 
     const handleFilterChange = (key: string, value: string | undefined) => {
         setFilters(prev => ({ ...prev, [key]: value }));
-        setPage(1); // Reset to page 1 on filter change
+        setPage(1);
     };
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
-        setPage(1); // Reset to page 1 on search
+        setPage(1);
     };
 
     return (
         <div className="space-y-6">
-            <div className="flex flex-col gap-2">
-                <h1 className="text-3xl font-bold tracking-tight">Students</h1>
+            <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-3">
+                    <h1 className="text-3xl font-bold tracking-tight">Students</h1>
+                    {!isLoading && totalCount > 0 && (
+                        <Badge variant="secondary" className="text-sm">
+                            {totalCount.toLocaleString()}
+                        </Badge>
+                    )}
+                </div>
                 <p className="text-muted-foreground">
-                    Manage your students, view their details, and add new ones.
+                    Manage and view student details from the Tool API.
                 </p>
             </div>
 
             <div className="space-y-4">
                 <div className="flex flex-col md:flex-row justify-between gap-4 items-start md:items-center">
-                    <Input
-                        placeholder="Search students..."
-                        value={search}
-                        onChange={handleSearchChange}
-                        className="max-w-sm"
-                    />
-                    {/* Add Create Button here if needed */}
+                    <div className="relative max-w-sm w-full">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input
+                            placeholder="Search students..."
+                            value={search}
+                            onChange={handleSearchChange}
+                            className="pl-9"
+                        />
+                    </div>
                 </div>
 
                 <StudentFilters
@@ -73,7 +85,7 @@ export default function StudentsPage() {
                     data={studentsData?.data || []}
                     loading={isLoading}
                     page={page}
-                    totalCount={parseInt(studentsData?.totalCount || "0")}
+                    totalCount={totalCount}
                     pageSize={pageSize}
                     onPageChange={setPage}
                 />

@@ -16,15 +16,13 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 
     const addNotification = (notification: Notification) => {
         setNotifications((prev) => {
-            // Keep max 50 notifications
             const updated = [notification, ...prev].slice(0, 50);
             return updated;
         });
 
-        // Auto-remove after 5 minutes
         setTimeout(() => {
             removeNotification(notification.id);
-        }, 5 * 60 * 1000); // 5 minutes
+        }, 5 * 60 * 1000);
     };
 
     const removeNotification = (id: string) => {

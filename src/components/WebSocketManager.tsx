@@ -11,14 +11,11 @@ export function WebSocketManager() {
     const navigate = useNavigate();
     const { addNotification } = useNotifications();
 
-    // Get token from localStorage - only once on mount
     const [token] = useState(() => localStorage.getItem('access_token'));
 
     const handleMessage = useCallback((notification: Notification) => {
-        // Add to context
         addNotification(notification);
 
-        // Show toast
         toast(notification.title, {
             description: notification.message,
             duration: 5000,
@@ -43,13 +40,13 @@ export function WebSocketManager() {
 
     useEffect(() => {
         if (error) {
-            console.error('[WebSocketManager] Connection error:', error);
+            console.error('WebSocket connection error:', error);
         }
     }, [error]);
 
     useEffect(() => {
-        console.log('[WebSocketManager] Connection status:', isConnected ? 'Connected' : 'Disconnected');
+        if (!isConnected) return;
     }, [isConnected]);
 
-    return null; // This is a logic-only component
+    return null;
 }

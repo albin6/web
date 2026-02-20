@@ -9,7 +9,6 @@ import type {
 } from '@/types/followup';
 import { toast } from 'sonner';
 
-// Query Keys
 export const followupKeys = {
     all: ['followups'] as const,
     lists: () => [...followupKeys.all, 'list'] as const,
@@ -21,7 +20,6 @@ export const followupKeys = {
     reminders: () => ['reminders', 'upcoming'] as const,
 };
 
-// List Follow-ups
 export function useFollowUpsList(params: GetFollowUpsParams = {}) {
     return useQuery({
         queryKey: followupKeys.list(params),
@@ -29,7 +27,6 @@ export function useFollowUpsList(params: GetFollowUpsParams = {}) {
     });
 }
 
-// Get Follow-up Details
 export function useFollowUpDetails(id: number) {
     return useQuery({
         queryKey: followupKeys.detail(id),
@@ -38,7 +35,6 @@ export function useFollowUpDetails(id: number) {
     });
 }
 
-// Create Follow-up
 export function useCreateFollowUp() {
     const queryClient = useQueryClient();
 
@@ -54,7 +50,6 @@ export function useCreateFollowUp() {
     });
 }
 
-// Restart Follow-up
 export function useRestartFollowUp() {
     const queryClient = useQueryClient();
 
@@ -71,7 +66,6 @@ export function useRestartFollowUp() {
     });
 }
 
-// Get Contact Logs
 export function useContactLogs(followUpId: number) {
     return useQuery({
         queryKey: followupKeys.contacts(followUpId),
@@ -80,7 +74,6 @@ export function useContactLogs(followUpId: number) {
     });
 }
 
-// Add Contact Log
 export function useAddContactLog() {
     const queryClient = useQueryClient();
 
@@ -99,7 +92,6 @@ export function useAddContactLog() {
     });
 }
 
-// Get Meetings
 export function useMeetings(followUpId: number) {
     return useQuery({
         queryKey: followupKeys.meetings(followUpId),
@@ -108,7 +100,6 @@ export function useMeetings(followUpId: number) {
     });
 }
 
-// Schedule Meeting
 export function useScheduleMeeting() {
     const queryClient = useQueryClient();
 
@@ -127,7 +118,6 @@ export function useScheduleMeeting() {
     });
 }
 
-// Complete Meeting
 export function useCompleteMeeting() {
     const queryClient = useQueryClient();
 
@@ -146,7 +136,6 @@ export function useCompleteMeeting() {
     });
 }
 
-// Submit Outcome
 export function useSubmitOutcome() {
     const queryClient = useQueryClient();
 
@@ -172,7 +161,6 @@ export function useSubmitOutcome() {
     });
 }
 
-// Get Upcoming Reminders
 export function useUpcomingReminders() {
     return useQuery({
         queryKey: followupKeys.reminders(),
