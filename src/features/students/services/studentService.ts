@@ -33,10 +33,20 @@ export const studentService = {
         if (!query.trim()) {
             return [];
         }
-        const response = await api.get<import('@/types/api').StudentsSearchResponse>(
+        const response = await api.get<{ data: any[] }>(
             ENDPOINTS.STUDENTS.SEARCH,
-            { params: { q: query, limit } }
+            { params: { searchKey: query, pageSize: limit, statusCodes: '2' } }
         );
-        return response.data.students;
+
+        // Map ToolStudent to Student interface
+        return response.data.data.map((s: any) => ({
+            id: s.id, // now a string (UUID)
+            full_name: s.name,
+            phone: s.mobile,
+            email: s.email,
+            program_status: s.status === 'Ongoing',
+            created_at: s.createdOn,
+            updated_at: s.createdOn, // Tool API might not have separate updated_at in summary
+        })) as unknown as Student[];
     },
 };

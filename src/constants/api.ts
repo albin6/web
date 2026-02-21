@@ -14,7 +14,7 @@ export const ENDPOINTS = {
     STUDENTS: {
         LIST: '/api/students',
         CREATE: '/api/students',
-        SEARCH: '/api/students/search',
+        SEARCH: '/api/tool/students',
     },
     FOLLOWUPS: {
         LIST: '/api/followups',

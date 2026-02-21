@@ -20,8 +20,8 @@ import { Check, ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface StudentSearchSelectProps {
-    value?: number;
-    onValueChange: (value: number | undefined) => void;
+    value?: string;
+    onValueChange: (value: string | undefined) => void;
     placeholder?: string;
 }
 

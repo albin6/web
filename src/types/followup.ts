@@ -26,14 +26,14 @@ export const OutcomeStatus = {
 export type OutcomeStatus = (typeof OutcomeStatus)[keyof typeof OutcomeStatus];
 
 export interface StudentBasic {
-    id: number;
+    id: string;
     full_name: string;
     email: string;
     phone: string;
 }
 
 export interface AssignedUser {
-    id: number;
+    id: string;
     name: string;
     email: string;
     role: string;
@@ -41,9 +41,9 @@ export interface AssignedUser {
 
 export interface FollowUp {
     id: number;
-    student_id: number;
+    student_id: string;
     student: StudentBasic;
-    assigned_to: number;
+    assigned_to: string;
     assigned_user: AssignedUser;
     stage: FollowUpStage;
     created_at: string;
@@ -56,12 +56,12 @@ export interface ContactLog {
     successful: boolean;
     notes?: string;
     created_at: string;
-    created_by: number;
+    created_by: string;
 }
 
 export interface MeetingParticipant {
     id: number;
-    user_id: number;
+    user_id: string;
     meeting_id: number;
     user?: AssignedUser;
 }
@@ -76,7 +76,7 @@ export interface Meeting {
     scheduled_at: string;
     meeting_link: string;
     status: MeetingStatus;
-    created_by: number;
+    created_by: string;
     creator: AssignedUser;
     participants?: MeetingParticipant[];
     created_at: string;
@@ -109,8 +109,8 @@ export interface Reminder {
 
 // API Request types
 export interface CreateFollowUpRequest {
-    student_id: number;
-    assigned_to: number;
+    student_id: string;
+    assigned_to: string;
 }
 
 export interface AddContactLogRequest {
@@ -121,7 +121,7 @@ export interface AddContactLogRequest {
 export interface ScheduleMeetingRequest {
     scheduled_at: string;
     meeting_link: string;
-    participant_ids: number[];
+    participant_ids: string[];
 }
 
 export interface SubmitOutcomeRequest {
@@ -153,7 +153,7 @@ export interface PaginatedResponse<T> {
 // Query Parameters
 export interface GetFollowUpsParams {
     stage?: FollowUpStage;
-    assigned_to?: number;
+    assigned_to?: string;
     page?: number;
     limit?: number;
 }
