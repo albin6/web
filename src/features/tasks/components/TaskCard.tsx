@@ -78,15 +78,15 @@ export const TaskCard = ({
     return (
         <Card
             className={cn(
-                "mb-3 cursor-grab active:cursor-grabbing hover:shadow-md transition-all duration-200 border-l-4 group relative",
-                isDragging ? "opacity-50 shadow-lg scale-105" : "opacity-100",
+                "mb-3 cursor-grab active:cursor-grabbing hover:shadow-sm transition-all duration-200 border-l-4 group relative bg-card",
+                isDragging ? "opacity-50 scale-[1.02] shadow-md z-50" : "opacity-100",
                 task.status === 'todo' && "border-l-blue-500/50 hover:border-l-blue-500",
                 task.status === 'in_progress' && "border-l-yellow-500/50 hover:border-l-yellow-500",
                 task.status === 'in_review' && "border-l-purple-500/50 hover:border-l-purple-500",
-                task.status === 'completed' && "border-l-green-500/50 hover:border-l-green-500",
-                "bg-card/50 backdrop-blur-sm"
+                task.status === 'completed' && "border-l-green-500/50 hover:border-l-green-500"
             )}
         >
+
             {/* Status Glow / Indicator */}
             {isOverdue && task.status !== 'completed' && (
                 <div className="absolute left-0 top-0 h-full w-1 bg-destructive/80 z-10" />
@@ -126,11 +126,13 @@ export const TaskCard = ({
 
                 {/* Pending approval indicator */}
                 {task.pending_approval && (
-                    <div className="mt-1 py-0.5 px-2 rounded-md bg-amber-500/10 border border-amber-500/20 flex items-center gap-1 animate-pulse w-fit">
+                    <div className="mt-1 py-0.5 px-2 rounded-md bg-amber-500/10 border border-amber-500/20 flex items-center gap-1.5 w-fit">
                         <Clock className="h-3 w-3 text-amber-500" />
-                        <span className="text-[10px] font-bold text-amber-500 uppercase tracking-widest">Pending Approval</span>
+                        <span className="text-[10px] font-bold text-amber-600 uppercase tracking-widest">Pending Approval</span>
                     </div>
                 )}
+
+
             </CardHeader>
 
             <CardContent className="p-3 pt-0 space-y-3">
@@ -251,11 +253,12 @@ export const TaskCard = ({
                             variant="default"
                             size="sm"
                             onClick={(e) => { e.stopPropagation(); onStatusChange?.(task.id, nextStatus); }}
-                            className="w-full h-8 text-xs"
+                            className="w-full h-9 text-xs font-bold rounded-xl shadow-sm hover:shadow-md transition-all active:scale-95"
                         >
                             {getStatusButtonText(nextStatus)}
                         </Button>
                     )}
+
 
                     {/* User: Request deadline change */}
                     {!isAdmin && !isReadOnly && task.status !== 'completed' && !task.pending_approval && !task.deadline_requested && (

@@ -68,11 +68,12 @@ export const KanbanBoard = ({
     }, [tasks]);
 
     const columns: { id: TaskStatus; title: string; icon: React.ReactNode }[] = [
-        { id: 'todo', title: 'To Do', icon: <ListTodo className="h-5 w-5 text-muted-foreground" /> },
-        { id: 'in_progress', title: 'In Progress', icon: <PlayCircle className="h-5 w-5 text-blue-500" /> },
-        { id: 'in_review', title: 'In Review', icon: <FileCheck className="h-5 w-5 text-yellow-500" /> },
-        { id: 'completed', title: 'Completed', icon: <CheckCircle className="h-5 w-5 text-green-500" /> },
+        { id: 'todo', title: 'To Do', icon: <ListTodo className="h-5 w-5 text-indigo-500" /> },
+        { id: 'in_progress', title: 'In Progress', icon: <PlayCircle className="h-5 w-5 text-amber-500" /> },
+        { id: 'in_review', title: 'In Review', icon: <FileCheck className="h-5 w-5 text-fuchsia-500" /> },
+        { id: 'completed', title: 'Completed', icon: <CheckCircle className="h-5 w-5 text-emerald-500" /> },
     ];
+
 
     const tasksByStatus = useMemo(() => {
         const grouped: Record<TaskStatus, Task[]> = {
