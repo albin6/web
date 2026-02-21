@@ -11,6 +11,11 @@ import FollowUpListPage from '@/features/followup/pages/FollowUpListPage';
 import FollowUpDetailPage from '@/features/followup/pages/FollowUpDetailPage';
 import TasksPage from '@/features/tasks/pages/TasksPage';
 import ProtectedRoute from '@/layouts/ProtectedRoute';
+import AdminRoute from '@/layouts/AdminRoute';
+import AdminOverviewPage from '@/features/admin/pages/AdminOverviewPage';
+import AdminTeamsPage from '@/features/admin/pages/AdminTeamsPage';
+import AdminRolesPage from '@/features/admin/pages/AdminRolesPage';
+import AdminUsersPage from '@/features/admin/pages/AdminUsersPage';
 import { Toaster } from 'sonner';
 import { queryClient } from '@/lib/queryClient';
 import { NotificationProvider } from '@/contexts/NotificationContext';
@@ -41,6 +46,14 @@ function App() {
                     <Route path="/tasks" element={<TasksPage />} />
                     <Route path="/followups" element={<FollowUpListPage />} />
                     <Route path="/followups/:id" element={<FollowUpDetailPage />} />
+
+                    {/* Admin Routes */}
+                    <Route element={<AdminRoute />}>
+                      <Route path="/admin" element={<AdminOverviewPage />} />
+                      <Route path="/admin/teams" element={<AdminTeamsPage />} />
+                      <Route path="/admin/roles" element={<AdminRolesPage />} />
+                      <Route path="/admin/users" element={<AdminUsersPage />} />
+                    </Route>
                   </Route>
                 </Route>
 

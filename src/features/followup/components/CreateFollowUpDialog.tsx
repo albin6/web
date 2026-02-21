@@ -27,8 +27,8 @@ import { StudentSearchSelect } from '@/features/students/components/StudentSearc
 import { UserSearchSelect } from '@/features/auth/components/UserSearchSelect';
 
 const createFollowUpSchema = z.object({
-    student_id: z.number().int().positive('Please select a student'),
-    assigned_to: z.number().int().positive('Please select a user'),
+    student_id: z.string().min(1, 'Please select a student'),
+    assigned_to: z.string().min(1, 'Please select a user'),
 });
 
 type CreateFollowUpFormValues = z.infer<typeof createFollowUpSchema>;
@@ -40,8 +40,8 @@ export function CreateFollowUpDialog() {
     const form = useForm<CreateFollowUpFormValues>({
         resolver: zodResolver(createFollowUpSchema),
         defaultValues: {
-            student_id: 0,
-            assigned_to: 0,
+            student_id: '',
+            assigned_to: '',
         },
     });
 
@@ -78,7 +78,7 @@ export function CreateFollowUpDialog() {
                                     <FormControl>
                                         <StudentSearchSelect
                                             value={field.value || undefined}
-                                            onValueChange={(value) => field.onChange(value || 0)}
+                                            onValueChange={(value) => field.onChange(value || '')}
                                         />
                                     </FormControl>
                                     <FormDescription>Search and select the student to follow up with</FormDescription>
@@ -96,7 +96,7 @@ export function CreateFollowUpDialog() {
                                     <FormControl>
                                         <UserSearchSelect
                                             value={field.value || undefined}
-                                            onValueChange={(value) => field.onChange(value || 0)}
+                                            onValueChange={(value) => field.onChange(value || '')}
                                         />
                                     </FormControl>
                                     <FormDescription>Search and select the user who will handle this</FormDescription>

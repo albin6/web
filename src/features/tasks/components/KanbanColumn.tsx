@@ -1,5 +1,6 @@
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { Plus } from 'lucide-react';
 import type { Task, TaskStatus } from '@/types/database';
 import { SortableTaskCard } from './SortableTaskCard';
 import { cn } from '@/lib/utils';
@@ -16,6 +17,7 @@ interface KanbanColumnProps {
     onEdit?: (task: Task) => void;
     onDelete?: (taskId: string) => void;
     onApprove?: (task: Task) => void;
+    onAddTask?: () => void;
 }
 
 export const KanbanColumn = ({
@@ -29,7 +31,8 @@ export const KanbanColumn = ({
     isReadOnly = false,
     onEdit,
     onDelete,
-    onApprove
+    onApprove,
+    onAddTask
 }: KanbanColumnProps) => {
     const { setNodeRef } = useDroppable({
         id
@@ -51,6 +54,15 @@ export const KanbanColumn = ({
                         {count}
                     </span>
                 </div>
+                {onAddTask && (
+                    <button
+                        onClick={onAddTask}
+                        className="p-1 hover:bg-background/80 rounded-md transition-colors text-muted-foreground hover:text-primary"
+                        title="Add Task"
+                    >
+                        <Plus className="h-4 w-4" />
+                    </button>
+                )}
             </div>
 
             {/* Task List */}

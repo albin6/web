@@ -28,6 +28,7 @@ interface KanbanBoardProps {
     isAdmin?: boolean;
     isReadOnly?: boolean;
     onApprove?: (task: Task) => void;
+    onAddTask?: () => void;
 }
 
 const dropAnimation: DropAnimation = {
@@ -47,6 +48,7 @@ export const KanbanBoard = ({
     onDelete,
     onRequestDeadlineChange,
     onApprove,
+    onAddTask,
     isAdmin = false,
     isReadOnly = false,
 }: KanbanBoardProps) => {
@@ -218,6 +220,7 @@ export const KanbanBoard = ({
                                 onDelete={onDelete}
                                 onApprove={onApprove}
                                 onRequestDeadlineChange={onRequestDeadlineChange}
+                                onAddTask={col.id === 'todo' ? onAddTask : undefined}
                                 isAdmin={isAdmin}
                                 isReadOnly={isReadOnly}
                             />

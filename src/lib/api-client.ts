@@ -119,9 +119,39 @@ class APIClient {
     }
 
     // User endpoints
-    async getUsers() {
-        const response = await this.client.get('/users');
+    async getUsers(params?: {
+        search?: string;
+        role?: string;
+        status?: string;
+        sort_by?: string;
+        sort_dir?: string;
+        limit?: number;
+        offset?: number;
+    }) {
+        const response = await this.client.get('/users', { params });
         return response.data;
+    }
+
+    async adminCreateUser(data: {
+        name: string;
+        email: string;
+        role?: string;
+        team_id?: string;
+        role_id?: string;
+        password?: string;
+    }) {
+        const response = await this.client.post('/admin/users', data);
+        return response.data;
+    }
+
+    async getAdminStats() {
+        const response = await this.client.get('/admin/stats');
+        return response.data as {
+            total_users: number;
+            pending_approvals: number;
+            total_teams: number;
+            total_tasks: number;
+        };
     }
 
     async getUser(id: string) {
@@ -144,13 +174,13 @@ class APIClient {
         return response.data;
     }
 
-    async promoteUser(id: string) {
-        const response = await this.client.post(`/users/${id}/promote`);
+    async demoteUser(id: string) {
+        const response = await this.client.post(`/users/${id}/demote`);
         return response.data;
     }
 
-    async demoteUser(id: string) {
-        const response = await this.client.post(`/users/${id}/demote`);
+    async promoteUser(id: string) {
+        const response = await this.client.post(`/users/${id}/promote`);
         return response.data;
     }
 

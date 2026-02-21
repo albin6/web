@@ -1,5 +1,5 @@
 export interface User {
-    id: number;
+    id: string;
     name: string;
     email: string;
     phone: string;
@@ -33,7 +33,7 @@ export interface SignupRequest {
 }
 
 export interface Student {
-    id: number;
+    id: string;
     full_name: string;
     phone: string;
     email: string;
