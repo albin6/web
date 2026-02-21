@@ -4,6 +4,8 @@ import { Plus } from 'lucide-react';
 import type { Task, TaskStatus } from '@/types/database';
 import { SortableTaskCard } from './SortableTaskCard';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+
 
 interface KanbanColumnProps {
     id: TaskStatus;
@@ -34,42 +36,46 @@ export const KanbanColumn = ({
     onApprove,
     onAddTask
 }: KanbanColumnProps) => {
-    const { setNodeRef } = useDroppable({
+    const { setNodeRef, isOver } = useDroppable({
         id
     });
 
     return (
-        <div className="flex flex-col h-full bg-muted/40 rounded-xl border border-border/50 overflow-hidden shadow-sm transition-all hover:bg-muted/60">
-            {/* Header */}
+        <div className="flex flex-col h-full min-h-[500px] bg-muted/40 rounded-xl border border-border/50 overflow-hidden shadow-sm transition-all hover:bg-muted/50">
             <div className={cn(
-                "px-4 py-3 border-b flex items-center justify-between sticky top-0 bg-muted/40 backdrop-blur-sm z-10",
+                "px-4 py-3 border-b flex items-center justify-between sticky top-0 bg-secondary/30 backdrop-blur-sm z-10",
                 id === 'todo' && "border-l-4 border-l-blue-500",
                 id === 'in_progress' && "border-l-4 border-l-yellow-500",
                 id === 'in_review' && "border-l-4 border-l-purple-500",
                 id === 'completed' && "border-l-4 border-l-green-500",
             )}>
                 <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-sm tracking-tight text-foreground/90">{title}</h3>
-                    <span className="bg-background/80 text-muted-foreground text-xs font-medium px-2 py-0.5 rounded-full border shadow-sm">
+                    <h3 className="font-semibold text-xs tracking-tight text-foreground/80 uppercase">{title}</h3>
+                    <span className="bg-background/80 text-muted-foreground text-[10px] font-bold px-2 py-0.5 rounded-full border shadow-sm">
                         {count}
                     </span>
                 </div>
                 {onAddTask && (
-                    <button
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7 rounded-md hover:bg-background/80"
                         onClick={onAddTask}
-                        className="p-1 hover:bg-background/80 rounded-md transition-colors text-muted-foreground hover:text-primary"
-                        title="Add Task"
                     >
                         <Plus className="h-4 w-4" />
-                    </button>
+                    </Button>
                 )}
             </div>
 
             {/* Task List */}
             <div
                 ref={setNodeRef}
-                className="flex-1 p-3 space-y-3 overflow-y-auto scrollbar-thin scrollbar-thumb-muted-foreground/20 scrollbar-track-transparent min-h-[150px]"
+                className={cn(
+                    "flex-1 p-3 space-y-3 overflow-y-auto scrollbar-thin scrollbar-thumb-muted-foreground/20 scrollbar-track-transparent min-h-[150px] transition-colors",
+                    isOver ? "bg-accent/20" : "bg-transparent"
+                )}
             >
+
                 <SortableContext
                     items={tasks.map(t => t.id)}
                     strategy={verticalListSortingStrategy}

@@ -267,9 +267,9 @@ const TasksPage = () => {
     }
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 animate-in">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                <div>
+                <div className="flex flex-col gap-1">
                     <h1 className="text-3xl font-bold tracking-tight">My Tasks</h1>
                     <p className="text-muted-foreground">
                         View and manage your assigned tasks
@@ -278,34 +278,33 @@ const TasksPage = () => {
                 <div className="flex items-center gap-2">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button className="bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 transition-all shadow-[0_4px_15px_rgba(43,124,238,0.4)] hover:shadow-[0_6px_20px_rgba(43,124,238,0.5)]">
+                            <Button className="font-semibold flex items-center gap-2">
                                 <Plus className="h-5 w-5" />
-                                <span className="hidden sm:inline">New Task</span>
-                                <span className="sm:hidden">New</span>
+                                <span>New Task</span>
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-56">
+                        <DropdownMenuContent align="end" className="w-56 mt-1">
                             <DropdownMenuItem
                                 onClick={() => { setSelfAssignMode(true); setCreateDialogOpen(true); }}
-                                className="cursor-pointer py-3"
+                                className="cursor-pointer py-2.5"
                             >
                                 <div className="flex items-start gap-3">
-                                    <User className="h-4 w-4 mt-0.5 text-primary" />
-                                    <div className="flex flex-col gap-0.5">
-                                        <span className="font-medium">For Myself</span>
-                                        <span className="text-xs text-muted-foreground">Create a personal task</span>
+                                    <User className="h-4 w-4 mt-0.5 text-muted-foreground" />
+                                    <div className="flex flex-col">
+                                        <span className="font-medium text-sm">For Myself</span>
+                                        <span className="text-[10px] text-muted-foreground leading-tight">Create a personal task</span>
                                     </div>
                                 </div>
                             </DropdownMenuItem>
                             <DropdownMenuItem
                                 onClick={() => { setSelfAssignMode(false); setCreateDialogOpen(true); }}
-                                className="cursor-pointer py-3"
+                                className="cursor-pointer py-2.5"
                             >
                                 <div className="flex items-start gap-3">
-                                    <Users className="h-4 w-4 mt-0.5 text-primary" />
-                                    <div className="flex flex-col gap-0.5">
-                                        <span className="font-medium">For Teammate</span>
-                                        <span className="text-xs text-muted-foreground">Assign to team member</span>
+                                    <Users className="h-4 w-4 mt-0.5 text-muted-foreground" />
+                                    <div className="flex flex-col">
+                                        <span className="font-medium text-sm">For Teammate</span>
+                                        <span className="text-[10px] text-muted-foreground leading-tight">Assign to team member</span>
                                     </div>
                                 </div>
                             </DropdownMenuItem>
@@ -315,6 +314,7 @@ const TasksPage = () => {
             </div>
 
             <PerformanceChart tasks={tasks} />
+
 
             <Tabs defaultValue="tasks" className="w-full mt-6">
                 <TabsList className="w-full justify-start gap-8 bg-transparent border-b rounded-none h-auto p-0 pb-2">
